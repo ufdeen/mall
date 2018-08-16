@@ -11,3 +11,4 @@ out/
 *.cache
 *.patch
 *.war
+git
