@@ -8,7 +8,6 @@ import com.mall.pojo.User;
 import com.mall.service.IUserService;
 import com.mall.util.MD5Util;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -154,8 +153,14 @@ public class IUserServiceImpl implements IUserService {
         }else{
             return ServerResponse.createByErrorMessage("修改失败");
         }
+    }
 
-
+    public ServerResponse checkAdminRole(User user){
+        if(user.getRole().intValue() == Const.Role.ROLE_ADMIN){
+            return ServerResponse.createBySuccess();
+        }else{
+            return ServerResponse.createByError();
+        }
     }
 
 }

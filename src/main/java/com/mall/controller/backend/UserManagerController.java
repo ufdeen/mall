@@ -1,7 +1,6 @@
 package com.mall.controller.backend;
 
 import com.mall.common.Const;
-import com.mall.common.ResponseCode;
 import com.mall.common.ServerResponse;
 import com.mall.pojo.User;
 import com.mall.service.IUserService;

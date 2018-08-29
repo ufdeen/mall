@@ -1,9 +1,9 @@
 package com.mall.dao;
 
-import com.mall.common.ResponseCode;
-import com.mall.common.ServerResponse;
 import com.mall.pojo.User;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -33,4 +33,6 @@ public interface UserMapper {
     int updatePasswordByUseridAndOldPassword(@Param("userid") Integer userid, @Param("oldPassword")String oldPassword,@Param("newPassword")String newPassword);
 
     int checkEmailByUserid(@Param("email") String email,@Param("userid") Integer userid);
+
+
 }
