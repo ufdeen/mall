@@ -1,6 +1,7 @@
 package com.mall.dao;
 
 import com.mall.pojo.Category;
+import com.mall.pojo.Product;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     List<Category> getCategoryChildrenByCategoryId(Integer categoryId);
+
 }

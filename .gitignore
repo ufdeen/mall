@@ -1,4 +1,6 @@
 .settings/
+classes/
+target/
 .project
 *.class
 /idea/ide

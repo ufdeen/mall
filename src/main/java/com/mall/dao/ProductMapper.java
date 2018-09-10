@@ -1,5 +1,6 @@
 package com.mall.dao;
 
+import com.mall.pojo.Category;
 import com.mall.pojo.Product;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,8 @@ public interface ProductMapper {
     List<Product> selectProductList();
 
     List<Product> selcetProductByNameAndId(@Param("productName") String productName, @Param("productId") Integer productId);
+
+
+    List<Product> selcetProductByNameCategory(@Param("productName") String productName, @Param("categorylist") List<Category> categorylist);
+
 }
