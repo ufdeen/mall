@@ -29,4 +29,6 @@ public interface CartMapper {
     int updateCheckByUserIdProductId(@Param("userId") Integer userId,@Param("productId") Integer productId,@Param("check") Integer check);
 
     int selectCountQuantityByUserId(Integer userId);
+
+    List<Cart> selectCheckedCartByUserId(Integer userId);
 }
