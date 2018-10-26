@@ -7,6 +7,7 @@ import com.mall.dao.UserMapper;
 import com.mall.pojo.User;
 import com.mall.service.IUserService;
 import com.mall.util.MD5Util;
+import com.mall.util.ShardedRedisUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,7 +98,7 @@ public class IUserServiceImpl implements IUserService {
         int countResult = userMapper.checkAnswer(username, question, answer);
         if(countResult > 0){
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            ShardedRedisUtil.setex(Const.TOKEN_PREFIX+username,forgetToken,60*60*12);
             return  ServerResponse.createBySuccess(forgetToken);
         }else{
             return  ServerResponse.createByErrorMessage("问题的答案错误");
@@ -112,7 +113,7 @@ public class IUserServiceImpl implements IUserService {
         if(vaildResponse.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+        String token = ShardedRedisUtil.get(Const.TOKEN_PREFIX+username);
         if(StringUtils.equals(token,forgetToken)){
             String md5password = MD5Util.MD5Encode(newPassword);
             int countResult = userMapper.updatePasswordByUsername(username, md5password);

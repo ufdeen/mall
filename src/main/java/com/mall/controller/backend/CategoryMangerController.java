@@ -3,6 +3,7 @@ package com.mall.controller.backend;
 import com.mall.common.Const;
 import com.mall.common.ResponseCode;
 import com.mall.common.ServerResponse;
+import com.mall.controller.portal.UserController;
 import com.mall.pojo.Category;
 import com.mall.pojo.User;
 import com.mall.service.ICategoryService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -27,10 +29,13 @@ public class CategoryMangerController {
     @Autowired
     private ICategoryService iCategoryService;
 
+    @Autowired
+    private UserController userController;
+
     @RequestMapping(value="add_category.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> addCategory(HttpSession session,String categoryName,@RequestParam(value = "parentId",defaultValue = "0") Integer parentId){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> addCategory(HttpServletRequest httpServletRequest, String categoryName, @RequestParam(value = "parentId",defaultValue = "0") Integer parentId){
+        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
@@ -42,8 +47,8 @@ public class CategoryMangerController {
 
     @RequestMapping(value="set_category_name.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> setCategoryName(HttpSession session,String categoryName,Integer categoryId){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> setCategoryName(HttpServletRequest httpServletRequest,String categoryName,Integer categoryId){
+        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
@@ -55,8 +60,8 @@ public class CategoryMangerController {
 
     @RequestMapping(value="get_category_children.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Category>> getCategoryChildrenByCategoryId(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<List<Category>> getCategoryChildrenByCategoryId(HttpServletRequest httpServletRequest,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
+        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
@@ -69,8 +74,8 @@ public class CategoryMangerController {
 
     @RequestMapping(value="get_category_deepchildren.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Category>> getCategoryDeepChildrenByCategoryId(HttpSession session,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<List<Category>> getCategoryDeepChildrenByCategoryId(HttpServletRequest httpServletRequest,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
+        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }

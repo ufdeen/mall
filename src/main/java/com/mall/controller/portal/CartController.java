@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -19,10 +20,13 @@ public class CartController {
     @Autowired
     private ICartService iCartService;
 
+    @Autowired
+    private UserController userController;
+
     @RequestMapping("add.do")
     @ResponseBody
-    public ServerResponse<CartVo> add(HttpSession session, Integer productId, Integer count){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> add(HttpServletRequest httpServletRequest, Integer productId, Integer count){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -31,8 +35,8 @@ public class CartController {
 
     @RequestMapping("update.do")
     @ResponseBody
-    public ServerResponse<CartVo> update(HttpSession session, Integer productId, Integer count){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> update(HttpServletRequest httpServletRequest, Integer productId, Integer count){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -41,8 +45,8 @@ public class CartController {
 
     @RequestMapping("delete_product.do")
     @ResponseBody
-    public ServerResponse<CartVo> delete(HttpSession session, String productIds){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> delete(HttpServletRequest httpServletRequest, String productIds){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -51,8 +55,8 @@ public class CartController {
 
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<CartVo> list(HttpSession session){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> list(HttpServletRequest httpServletRequest){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -61,8 +65,8 @@ public class CartController {
 
     @RequestMapping("check_all.do")
     @ResponseBody
-    public ServerResponse<CartVo> checkAll(HttpSession session){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> checkAll(HttpServletRequest httpServletRequest){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -71,8 +75,8 @@ public class CartController {
 
     @RequestMapping("uncheck_all.do")
     @ResponseBody
-    public ServerResponse<CartVo> uncheckAll(HttpSession session){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> uncheckAll(HttpServletRequest httpServletRequest){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -81,8 +85,8 @@ public class CartController {
 
     @RequestMapping("check_one.do")
     @ResponseBody
-    public ServerResponse<CartVo> checkOne(HttpSession session,Integer productId){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> checkOne(HttpServletRequest httpServletRequest,Integer productId){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -91,8 +95,8 @@ public class CartController {
 
     @RequestMapping("uncheck_one.do")
     @ResponseBody
-    public ServerResponse<CartVo> uncheckOne(HttpSession session,Integer productId){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<CartVo> uncheckOne(HttpServletRequest httpServletRequest,Integer productId){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -101,8 +105,8 @@ public class CartController {
 
     @RequestMapping("count_quantity.do")
     @ResponseBody
-    public ServerResponse<Integer> countQuantity(HttpSession session,Integer productId){
-        User user  =  (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Integer> countQuantity(HttpServletRequest httpServletRequest,Integer productId){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             return  ServerResponse.createBySuccess(0);
         }

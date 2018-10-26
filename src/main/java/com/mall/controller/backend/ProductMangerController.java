@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.mall.common.Const;
 import com.mall.common.ResponseCode;
 import com.mall.common.ServerResponse;
+import com.mall.controller.portal.UserController;
 import com.mall.pojo.Product;
 import com.mall.pojo.User;
 import com.mall.service.IFileService;
@@ -36,6 +37,10 @@ public class ProductMangerController {
     @Autowired
     private IFileService iFileService;
 
+    @Autowired
+    private UserController userController;
+
+
     /**
      * 判断用户是否登录且是否为管理员
      * */
@@ -53,8 +58,8 @@ public class ProductMangerController {
 
     @RequestMapping("saveOrUpdateProduct.do")
     @ResponseBody
-    public ServerResponse saveOrUpdateProduct(HttpSession session, Product product) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse saveOrUpdateProduct(HttpServletRequest httpServletRequest, Product product) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -64,8 +69,8 @@ public class ProductMangerController {
 
     @RequestMapping("set_sale_status.do")
     @ResponseBody
-    public ServerResponse setSaleStatus(HttpSession session,Integer productId,Integer status){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse setSaleStatus(HttpServletRequest httpServletRequest,Integer productId,Integer status){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -77,8 +82,8 @@ public class ProductMangerController {
 
     @RequestMapping("manager_product_detail.do")
     @ResponseBody
-    public ServerResponse<ProductDetailVo> managerProductDetail(HttpSession session,Integer productId ){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<ProductDetailVo> managerProductDetail(HttpServletRequest httpServletRequest,Integer productId ){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -90,8 +95,8 @@ public class ProductMangerController {
 
     @RequestMapping("manager_product_list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> managerProductList(HttpSession session, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> managerProductList(HttpServletRequest httpServletRequest, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -102,8 +107,8 @@ public class ProductMangerController {
 
     @RequestMapping("search.do")
     @ResponseBody
-    public ServerResponse<PageInfo> productSearch(HttpSession session,String productName,Integer productId, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> productSearch(HttpServletRequest httpServletRequest,String productName,Integer productId, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -114,8 +119,8 @@ public class ProductMangerController {
 
     @RequestMapping("upload.do")
     @ResponseBody
-    public ServerResponse upload(HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse upload(HttpServletRequest httpServletRequest,HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file){
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
@@ -135,9 +140,9 @@ public class ProductMangerController {
 
     @RequestMapping("richtext_img_upload.do")
     @ResponseBody
-    public Map richtextImgUpload(HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file,HttpServletResponse response){
+    public Map richtextImgUpload(HttpServletRequest httpServletRequest,HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file,HttpServletResponse response){
         Map resultMap = Maps.newHashMap();
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             resultMap.put("success",false);
             resultMap.put("msg","当前未登录");

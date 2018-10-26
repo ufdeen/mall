@@ -19,6 +19,10 @@ public class ProductController {
     @Autowired
     private IProductService iProductService;
 
+    @Autowired
+    private UserController userController;
+
+
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse<ProductDetailVo> detail(Integer productId){

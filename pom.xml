@@ -277,7 +277,7 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <compilerArguments>
-                        <extdirs>${project.basedir}\web\WEB-INF\lib</extdirs>
+                        <extdirs>${project.basedir}\src\main\webapp\WEB-INF\lib</extdirs>
                     </compilerArguments>
 
                 </configuration>
@@ -293,7 +293,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <webXml>web\WEB-INF\web.xml</webXml>
+                    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
                 </configuration>
             </plugin>
 

@@ -11,6 +11,8 @@ public class Const {
 
     public static final String USERNAME = "username";
 
+    public static final String TOKEN_PREFIX = "token_"; //生成token的前缀
+
     public interface Role {
         int ROLE_CUSTOMER = 0;
         int ROLE_ADMIN = 1;
@@ -62,6 +64,14 @@ public class Const {
             }
             throw new RuntimeException("么有找到对应的枚举");
         }
+
+    }
+
+    /**
+     * 登陆用户设置参数
+     * */
+    public interface RedisCacheExtime{
+        int REDIS_SESSION_EXPIRETIME = 60*30;
 
     }
 }

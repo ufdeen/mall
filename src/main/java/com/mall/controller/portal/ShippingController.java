@@ -6,11 +6,13 @@ import com.mall.common.ServerResponse;
 import com.mall.pojo.Shipping;
 import com.mall.pojo.User;
 import com.mall.service.IShippinService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -20,10 +22,12 @@ public class ShippingController {
 
     @Autowired
     private IShippinService iShippinService;
+    @Autowired
+    private UserController userController;
 
     @RequestMapping("add_shipping.do")
-    public ServerResponse<Map> addShipping(Shipping shipping, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Map> addShipping(Shipping shipping, HttpServletRequest httpServletRequest) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if (user == null) {
             return ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -33,8 +37,8 @@ public class ShippingController {
     }
 
     @RequestMapping("update_shipping.do")
-    public ServerResponse<Map> updateShipping(Shipping shipping, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Map> updateShipping(Shipping shipping, HttpServletRequest httpServletRequest) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if (user == null) {
             return ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -43,8 +47,8 @@ public class ShippingController {
     }
 
     @RequestMapping("delete_shipping.do")
-    public ServerResponse<Map> delectShipping(Integer shippingId, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Map> delectShipping(Integer shippingId, HttpServletRequest httpServletRequest) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if (user == null) {
             return ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -53,8 +57,8 @@ public class ShippingController {
     }
 
     @RequestMapping("select_shipping.do")
-    public ServerResponse<Shipping> selectShipping(Integer shippingId, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Shipping> selectShipping(Integer shippingId, HttpServletRequest httpServletRequest) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if (user == null) {
             return ServerResponse.createByErrorMessage("当前未登录");
         }
@@ -63,8 +67,8 @@ public class ShippingController {
     }
 
     @RequestMapping("list_shipping.do")
-    public ServerResponse<PageInfo> listShipping(HttpSession session, @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> listShipping(HttpServletRequest httpServletRequest, @RequestParam(value = "pageNo",defaultValue = "0") Integer pageNo,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if (user == null) {
             return ServerResponse.createByErrorMessage("当前未登录");
         }
