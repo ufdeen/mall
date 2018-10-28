@@ -64,6 +64,9 @@ public class ShardedRedisUtil {
     public static String get(String key){
         ShardedJedis jedis = null;
         String result = null;
+        if(key == null){
+          return null;
+        }
         try{
             jedis = ShardedRedisPool.getResource();
             result = jedis.get(key);

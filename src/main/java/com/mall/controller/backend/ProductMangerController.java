@@ -53,29 +53,30 @@ public class ProductMangerController {
         }
 
         return  null;
+
     }
 
 
     @RequestMapping("saveOrUpdateProduct.do")
     @ResponseBody
     public ServerResponse saveOrUpdateProduct(HttpServletRequest httpServletRequest, Product product) {
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
-        }
+        }*/
         return  iProductService.saveOrUpdateProduct(product);
     }
 
     @RequestMapping("set_sale_status.do")
     @ResponseBody
     public ServerResponse setSaleStatus(HttpServletRequest httpServletRequest,Integer productId,Integer status){
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
         }
-
+*/
         return  iProductService.setSaleStatus(productId,status);
 
     }
@@ -83,11 +84,11 @@ public class ProductMangerController {
     @RequestMapping("manager_product_detail.do")
     @ResponseBody
     public ServerResponse<ProductDetailVo> managerProductDetail(HttpServletRequest httpServletRequest,Integer productId ){
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
-        }
+        }*/
 
         return iProductService.managerProductDetail(productId);
 
@@ -96,11 +97,11 @@ public class ProductMangerController {
     @RequestMapping("manager_product_list.do")
     @ResponseBody
     public ServerResponse<PageInfo> managerProductList(HttpServletRequest httpServletRequest, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+        /*User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
-        }
+        }*/
 
         return iProductService.managerProductList(pageNo,pageSize);
     }
@@ -108,11 +109,11 @@ public class ProductMangerController {
     @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse<PageInfo> productSearch(HttpServletRequest httpServletRequest,String productName,Integer productId, @RequestParam(value = "pageNo",defaultValue = "1")  Integer pageNo, @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
-        }
+        }*/
 
         return iProductService.productSearch(productName,productId,pageNo,pageSize);
     }
@@ -120,11 +121,11 @@ public class ProductMangerController {
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpServletRequest httpServletRequest,HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file){
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+        /*User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         ServerResponse serverResponse = managerJudge(user);
         if(serverResponse!=null){
             return serverResponse;
-        }
+        }*/
         String path = session.getServletContext().getRealPath("upload");
         String filename = iFileService.upload(path,file);
         String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+filename;
@@ -142,7 +143,7 @@ public class ProductMangerController {
     @ResponseBody
     public Map richtextImgUpload(HttpServletRequest httpServletRequest,HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file,HttpServletResponse response){
         Map resultMap = Maps.newHashMap();
-        User user = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User user = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(user == null){
             resultMap.put("success",false);
             resultMap.put("msg","当前未登录");
@@ -151,7 +152,7 @@ public class ProductMangerController {
             resultMap.put("success",false);
             resultMap.put("msg","当前非管理员用户");
         }
-
+*/
         String path = session.getServletContext().getRealPath("upload");
         String filename = iFileService.upload(path,file);
         if(filename == null ){

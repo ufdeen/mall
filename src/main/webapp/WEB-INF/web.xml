@@ -23,6 +23,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--在redis设置session过期时间在-->
     <filter>
         <filter-name>SessionExpirFilter</filter-name>
         <filter-class>com.mall.controller.common.SessionExpirFilter</filter-class>
@@ -31,6 +32,16 @@
         <filter-name>SessionExpirFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
+
+    <!--使用springsession来包装session-->
+    <!--<filter>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSessionRepositoryFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>-->
 
 
     <listener>

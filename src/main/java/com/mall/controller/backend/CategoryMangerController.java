@@ -35,39 +35,39 @@ public class CategoryMangerController {
     @RequestMapping(value="add_category.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> addCategory(HttpServletRequest httpServletRequest, String categoryName, @RequestParam(value = "parentId",defaultValue = "0") Integer parentId){
-        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
         if(!iUserService.checkAdminRole(currentUser).isSuccess()){
             return  ServerResponse.createByErrorMessage("非管理员用户，无法登录");
-        }
+        }*/
         return  iCategoryService.addCategory(categoryName,parentId);
     }
 
     @RequestMapping(value="set_category_name.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> setCategoryName(HttpServletRequest httpServletRequest,String categoryName,Integer categoryId){
-        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
+        /*User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
         if(!iUserService.checkAdminRole(currentUser).isSuccess()){
             return  ServerResponse.createByErrorMessage("非管理员用户，无法登录");
-        }
+        }*/
         return  iCategoryService.updateCategoryName(categoryName,categoryId);
     }
 
     @RequestMapping(value="get_category_children.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<Category>> getCategoryChildrenByCategoryId(HttpServletRequest httpServletRequest,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
-        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
         if(!iUserService.checkAdminRole(currentUser).isSuccess()){
             return  ServerResponse.createByErrorMessage("非管理员用户，无法登录");
-        }
+        }*/
        return iCategoryService.getCategoryChildrenByCategoryId(categoryId);
     }
 
@@ -75,13 +75,13 @@ public class CategoryMangerController {
     @RequestMapping(value="get_category_deepchildren.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List<Category>> getCategoryDeepChildrenByCategoryId(HttpServletRequest httpServletRequest,@RequestParam(value = "categoryId",defaultValue = "0") Integer categoryId){
-        User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
+       /* User currentUser = userController.getUserInfoByLoginInfo(httpServletRequest);
         if(currentUser == null){
             return  ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"当前未登录,进行强制登录");
         }
         if(!iUserService.checkAdminRole(currentUser).isSuccess()){
             return  ServerResponse.createByErrorMessage("非管理员用户，无法登录");
-        }
+        }*/
         return  iCategoryService.getCategoryDeepChildrenByCategoryId(categoryId);
     }
 
