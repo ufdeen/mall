@@ -72,6 +72,13 @@ public class Const {
      * */
     public interface RedisCacheExtime{
         int REDIS_SESSION_EXPIRETIME = 60*30;
+    }
 
+
+    /***
+     * redis 分布式锁
+     * */
+    public interface RedisLock{
+        String CLOSE_ORDER_LOCK = "CLOSE_ORDER_LOCK";
     }
 }

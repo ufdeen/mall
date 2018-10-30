@@ -24,4 +24,9 @@ public interface IOrderService {
     ServerResponse<OrderVo> manageDetail(Long orderNo);
     ServerResponse<PageInfo> manageSearch(Long orderNo,int pageNum,int pageSize);
     ServerResponse<String> manageSendGoods(Long orderNo);
+
+    /**
+     * 定时任务关闭过期未支付订单
+     * */
+    void closeOrder(int hour);
 }

@@ -26,8 +26,10 @@ import com.mall.vo.OrderItemVo;
 import com.mall.vo.OrderProductVo;
 import com.mall.vo.OrderVo;
 import com.mall.vo.ShippingVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service("iOrderService")
+@Slf4j
 public class IOrderServiceImpl implements IOrderService {
     private Logger logger = LoggerFactory.getLogger(IOrderServiceImpl.class);
 
@@ -580,6 +583,34 @@ public class IOrderServiceImpl implements IOrderService {
             }
         }
         return ServerResponse.createByErrorMessage("订单不存在");
+    }
+
+    @Override
+    public void closeOrder(int hour) {
+        //1.获取过期的日期
+        Date date  = DateUtils.addHours(new Date(),-hour);
+        //2.查询所有过期日期前未付款的订单
+        List<Order> orderList = orderMapper.selectByStatusDate(OrderStatusEnum.NO_PAY.getCode(),DateTimeUtil.dateToStr(date));
+        for(Order order : orderList){
+            //3.获取订单产品
+            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
+            for(OrderItem orderItem : orderItems){
+                //4.还原库存
+                Integer stock = productMapper.selectStockById(orderItem.getProductId());
+                if(stock == null){
+                    continue;
+                }
+                Product product = new Product();
+                product.setId(orderItem.getProductId());
+                product.setStock(stock+orderItem.getQuantity());
+                productMapper.updateByPrimaryKeySelective(product);
+            }
+            //5.关闭订单
+            int resultNum = orderMapper.closeOrder(order.getId());
+            if(resultNum > 0 ){
+                log.info("取消过期未付款订单 orderNo:{}",order.getOrderNo() );
+            }
+        }
     }
 
 
