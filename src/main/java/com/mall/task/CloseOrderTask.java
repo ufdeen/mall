@@ -1,15 +1,21 @@
 package com.mall.task;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.mall.common.Const;
+import com.mall.common.RedissonManager;
 import com.mall.service.IOrderService;
 import com.mall.util.PropertiesUtil;
 import com.mall.util.ShardedRedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description: 取消过期订单定时任务
@@ -21,6 +27,8 @@ import org.springframework.stereotype.Component;
 public class CloseOrderTask {
     @Autowired
     private IOrderService iOrderService;
+    @Autowired
+    private RedissonManager redissonManager;
 
     //@Scheduled(cron="0 0/1 * * * ?")
     public void closeTaskV1(){
@@ -29,7 +37,7 @@ public class CloseOrderTask {
 
     }
 
-    @Scheduled(cron="0 0/1 * * * ?")
+    //@Scheduled(cron="0 0/1 * * * ?")
     /**
      * 使用redis锁来防止死锁
      * */
@@ -56,6 +64,33 @@ public class CloseOrderTask {
                 }
             }
         }
+    }
+
+    @Scheduled(cron="0/30 * * * * ?")
+    /**
+     * 使用redisson框架来获取分布式锁
+     * */
+    public void closeTaskV3(){
+        RLock lock = redissonManager.getRedisson().getLock(Const.RedisLock.CLOSE_ORDER_LOCK);
+        boolean getLock = false;
+        try {
+            if((getLock = lock.tryLock(0,50, TimeUnit.SECONDS))){
+                //获取到了锁
+                log.info("获取到锁:{}，Thread:{}",Const.RedisLock.CLOSE_ORDER_LOCK);
+                iOrderService.closeOrder(PropertiesUtil.getIntegerProperty("task.closeOrder","2"));
+            }else{
+                log.info("未获取到锁:{}，Thread:{}",Const.RedisLock.CLOSE_ORDER_LOCK);
+            }
+        } catch (InterruptedException e) {
+           log.error("获取分布式锁异常",e);
+        }finally {
+            if(getLock){
+                lock.unlock();
+                log.info("释放锁:{}，Thread:{}",Const.RedisLock.CLOSE_ORDER_LOCK);
+            }
+        }
+
+
     }
 
 

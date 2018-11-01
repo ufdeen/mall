@@ -3,7 +3,6 @@ package com.mall.common;
 import com.mall.util.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,7 @@ public class RedissonManager {
     @PostConstruct
     private void init(){
         try {
-            config.useSingleServer().setAddress(new StringBuffer(redis1Ip).append(redis1Ip).toString());
+            config.useSingleServer().setAddress(new StringBuffer(redis1Ip).append(":").append(redis1Port).toString());
             redisson = (Redisson) Redisson.create(config);
             log.info("redisson 初始化完成");
         } catch (Exception e) {
